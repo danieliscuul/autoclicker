@@ -1,0 +1,32 @@
+import time
+import pyautogui
+import keyboard
+
+stop_flag = False
+
+def autoclick(interval):
+    global stop_flag
+    while not stop_flag:
+        pyautogui.click()
+        time.sleep(interval)
+
+def stop_autoclick():
+    global stop_flag
+    stop_flag = True
+
+# Set the interval (in seconds)
+interval = 0.1
+
+# Start the autoclicking in a separate thread
+import threading
+autoclick_thread = threading.Thread(target=autoclick, args=(interval,))
+autoclick_thread.start()
+
+# Wait for user to press any key to stop
+keyboard.wait("any key")
+
+# Stop the autoclicking
+stop_autoclick()
+
+# Wait for the autoclick thread to finish
+autoclick_thread.join()
